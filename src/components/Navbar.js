@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import Searchbar from "./Searchbar";
 
-const Navbar = () => {
+const Navbar = ({isProfile}) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
@@ -8,19 +9,33 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="">
-            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <nav className="w-full px-2 sm:px-6 lg:px-8 text-white">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <img className="h-5 w-auto" src="logo.png" alt="Your Company" />
                     </div>
                     {/* Nav Links */}
+                    {
+                        isProfile && (
+                            <Searchbar />
+                        )
+                    }
                     <div className="hidden sm:block">
-                        <div className="flex space-x-4">
+                        {isProfile ?  (
+                            <div className="flex items-center">
+                                <div className="flex-col justify-center">
+                                    <h6 className="text-sm text-right">Hey doodle</h6>
+                                    <h6 className="text-xs">see your dashboard</h6>
+                                </div>
+                                <img src="profile.png" className="w-14 h-14 object-contain" />
+                        </div>
+                        ) : (
+                            <div className="flex space-x-4">
                             <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
                             <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Contact</a>
                         </div>
+                        )}
                     </div>
                     {/* Mobile Hamburger Menu */}
                     <div className="sm:hidden">
@@ -42,7 +57,6 @@ const Navbar = () => {
                         </button>
                     </div>
                 </div>
-            </div>
             {/* Mobile Menu */}
             <div className={`sm:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`} id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1">
