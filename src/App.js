@@ -3,6 +3,7 @@ import LoginScreen from './screens/LoginScreen';
 import SplashScreen from './screens/SplashScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
+import RestaurentListScreen from './screens/RestaurentListScreen';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path='/login' Component={LoginScreen} />
           <Route path='/signup' Component={SignupScreen} />
           <Route path='/home' Component={HomeScreen} />
+          <Route path='/restaurents' Component={RestaurentListScreen} />
       </Routes>
     </Router>
   );

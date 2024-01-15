@@ -1,14 +1,47 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import LoginComponent from "../components/LoginComponent";
+import {useSelector, useDispatch} from 'react-redux'
 import axios from "axios";
 import {useNavigate} from 'react-router-dom'
+import { register } from "../actions/userActions";
 
 const SignupScreen = () => {
 
-    const navigate = useNavigate()
+    const [username, setUsername] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [err, setErr] = useState(null)
+    const [errVisible, setErrVisible] = useState(true)
 
-    const login = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const userRegister = useSelector((state) => state.userRegister)
+    const { loading, error, userInfo } = userRegister
+
+    useEffect(() => {
+        if(userInfo) {
+            navigate('/home')
+        } else if(error) {
+            setErr(error)
+        }
+    })
+
+    const loginNavigator = () => {
         navigate('/login')
+    }
+
+    const signup = () => {
+        if(!username || !email || !password) {
+            setErr('Please fill the required credentials')
+            setErrVisible(true)
+            setTimeout(() => {
+                setErr('');
+                setErrVisible(false);
+              }, 2000);
+        } else {
+            dispatch(register(username, email, password))
+        }
     }
 
     return (
@@ -35,6 +68,7 @@ const SignupScreen = () => {
                                     className="border border-gray-600 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-4 mb-2 mt-4"
                                     placeholder="Enter your name"
                                     required
+                                    onChange={(e) => setUsername(e.target.value)}
                                     />
                             </div>
                             <div className="relative rounded-md shadow-sm ">
@@ -43,8 +77,9 @@ const SignupScreen = () => {
                                     name="email"
                                     id="email"
                                     className="border border-gray-600 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-4 mb-2 mt-4"
-                                    placeholder="Enter mobile number"
+                                    placeholder="Enter your mail-id"
                                     required
+                                    onChange={(e) => setEmail(e.target.value)}
                                     />
                             </div>
                             <div className="relative rounded-md shadow-sm">
@@ -55,6 +90,7 @@ const SignupScreen = () => {
                                     className="border border-gray-600 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-4 mb-2 mt-4"
                                     placeholder="Enter your password"
                                     required
+                                    onChange={(e) => setPassword(e.target.value)}
                                     />
                             </div>
                             <div class="flex items-center h-5 mt-6">
@@ -62,12 +98,15 @@ const SignupScreen = () => {
                                 <label for="remember" class="ml-2 mt-1 text-sm font-medium text-gray-500">Keep me signed in</label>
                             </div>
                             <div className="">
-                                <button type="button" onClick={login} class=" text-white bg-black font-medium rounded-lg text-sm px-5 py-2 text-center mb-4 mt-6">Login</button>
+                                <button type="button" onClick={signup} class=" text-white bg-black font-medium rounded-lg text-sm px-5 py-2 text-center mb-4 mt-6">Login</button>
                             </div>
+                            {err && errVisible && <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+                                <span class="font-medium"></span> {err}
+                            </div>}
                         </div>
                     </div>
                     <div className="absolute left-2/4 top-3/4 transform -translate-x-1/2 -translate-y-1/2 mt-16">
-                        <p className="text-white font-thin text-sm mt-2">Already logged in? <span className="font-bold underline text-sm hover:cursor-pointer" onClick={login}>Signup</span></p>
+                        <p className="text-white font-thin text-sm mt-2">Already logged in? <span className="font-bold underline text-sm hover:cursor-pointer" onClick={loginNavigator}>Login</span></p>
                     </div>
                 </div>
             </div>

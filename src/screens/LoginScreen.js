@@ -1,14 +1,48 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LoginComponent from "../components/LoginComponent";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom'
+import {useSelector, useDispatch} from 'react-redux'
+import { login } from "../actions/userActions";
 
 const LoginScreen = () => {
 
-    const [emailValue, setEmailValue] = useState('')
-    const [passwordValue, setPasswordValue] = useState('')
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [err, setErr] = useState(null)
+    const [errVisible, setErrVisible] = useState(true)
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const userLogin = useSelector(state => state.userLogin)
+    const {loading, userInfo, error} = userLogin
+
+    useEffect(() => {
+        if(userInfo) {
+            navigate('/home')
+        } else if(error) {
+            setErr(error)
+            setErrVisible(true)
+            setTimeout(() => {
+                setErr('');
+                setErrVisible(false);
+              }, 2000);
+        }
+    }, [userInfo, error])
+
+    const loginHandler = () => {
+        if( !email || !password) {
+            setErr('Please fill the credentials')
+            setErrVisible(true)
+            setTimeout(() => {
+                setErr('');
+                setErrVisible(false);
+              }, 2000);
+        } else {
+            dispatch(login(email, password))
+        }
+    }
 
     const signup = () => {
         navigate('/signup')
@@ -38,7 +72,7 @@ const LoginScreen = () => {
                                     className="border border-gray-600 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-4 mb-2 mt-4"
                                     placeholder="Enter email "
                                     required
-                                    onChange={(e) => setEmailValue(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     />
                                 {/* <BsFillTelephoneFill className="absolute top-3 left-2" /> */}
                             </div>
@@ -50,7 +84,7 @@ const LoginScreen = () => {
                                     className="border border-gray-600 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-4 mb-2 mt-4"
                                     placeholder="Enter your password"
                                     required
-                                    onChange={(e) => setPasswordValue(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     />
                                 {/* <BsFillTelephoneFill className="absolute top-3 left-2" /> */}
                             </div>
@@ -59,15 +93,16 @@ const LoginScreen = () => {
                                 <label for="remember" class="ml-2 mt-1 text-sm font-medium text-gray-500">Keep me signed in</label>
                             </div>
                             <div className="">
-                                <button type="button" onClick={signup} class=" text-white bg-black font-medium rounded-lg text-sm px-5 py-2 text-center mb-4 mt-6">Login</button>
+                                <button type="button" onClick={loginHandler} class=" text-white bg-black font-medium rounded-lg text-sm px-5 py-2 text-center mb-2 mt-6">Login</button>
                             </div>
+                            {err && errVisible && <div class="p-2 mb-8 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+                                <span class="font-medium"></span> {err}
+                            </div>}
                         </div>
                     </div>
                     <div className="absolute left-2/4 top-3/4 transform -translate-x-1/2 -translate-y-1/2 mt-4">
                         <p className="text-white font-thin text-sm">Are you a new user? <span className="font-bold underline text-sm hover:cursor-pointer" onClick={signup}>Signup</span></p>
                     </div>
-                    {console.log('current email is:', emailValue)}
-                    {console.log('current password value is:', passwordValue)}
                 </div>
             </div>
         </div>
