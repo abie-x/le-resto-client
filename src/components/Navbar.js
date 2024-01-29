@@ -101,7 +101,7 @@ const Navbar = ({isProfile, isLocation, setCity, setSearchQuery, serachHandler, 
                         {isProfile ?  (
                             <div className="flex items-center">
                                 <div className="flex-col justify-center">
-                                    <h6 className="text-sm text-right">Hey doodle</h6>
+                                    <h6 className="text-sm text-right">Hey Doodle</h6>
                                     <h6 className="text-xs">see your dashboard</h6>
                                 </div>
                                 <img src="profile.png" className="w-14 h-14 object-contain" />

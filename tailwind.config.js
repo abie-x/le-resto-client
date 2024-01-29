@@ -10,7 +10,7 @@ module.exports = {
         'footer-texture': "url('/img/footer-texture.png')",
       }
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 }
 }
 

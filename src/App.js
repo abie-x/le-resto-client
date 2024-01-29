@@ -4,6 +4,8 @@ import SplashScreen from './screens/SplashScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
 import RestaurentListScreen from './screens/RestaurentListScreen';
+import MenuListScreen from './screens/MenuListScreen';
+import CartScreen from './screens/CartScreen';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path='/signup' Component={SignupScreen} />
           <Route path='/home' Component={HomeScreen} />
           <Route path='/restaurents' Component={RestaurentListScreen} />
+          <Route path='/menu/:id' Component={MenuListScreen} />
+          <Route path='/cart' Component={CartScreen} />
       </Routes>
     </Router>
   );

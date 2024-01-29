@@ -18,10 +18,17 @@ const HomeScreen = () => {
         setCuisine(value)
     }
 
-    const ambienceSelector = async (value) => {
-        await setAmbience(value)
-        await ambienceHandler()
+    const ambienceSelector =  (value) => {
+        setAmbience(value)
     }
+
+    useEffect(() => {
+        if(city && ambience) {
+            navigate(`/restaurents?ambience=${ambience}&city=${city}`)
+        } else if(city && cuisine) {
+            navigate(`/restaurents?cuisine=${cuisine}&city=${city}`)
+        }
+    }, [ambience, cuisine])
 
     const serachHandler = () => {
         if(!city) {
@@ -43,26 +50,27 @@ const HomeScreen = () => {
         }  
     }
 
-    const ambienceHandler = async () => {
-        if(!city) {
-            setErr('Please select a city to continue')
-            setErrVisible(true)
-            setTimeout(() => {
-                setErr('');
-                setErrVisible(false);
-              }, 2000);
-        } else if(!ambience) {
-            console.log(ambience)
-            setErr('Please enter the dish to continue')
-            setErrVisible(true)
-            setTimeout(() => {
-                setErr('');
-                setErrVisible(false);
-              }, 2000);
-        } else {
-            navigate(`/restaurents?ambience=${ambience}&city=${city}`)
-        }  
-    }
+    // const ambienceHandler = async () => {
+    //     if(!city) {
+    //         setErr('Please select a city to continue')
+    //         setErrVisible(true)
+    //         setTimeout(() => {
+    //             setErr('');
+    //             setErrVisible(false);
+    //           }, 2000);
+    //     } else if(!ambience) {
+    //         console.log('i cannot see the ambience')
+    //         // console.log(ambience)
+    //         // setErr('Please enter the dish to continue')
+    //         // setErrVisible(true)
+    //         // setTimeout(() => {
+    //         //     setErr('');
+    //         //     setErrVisible(false);
+    //         //   }, 2000);
+    //     } else {
+    //         navigate(`/restaurents?ambience=${ambience}&city=${city}`)
+    //     }  
+    // }
 
     return (
         <div className='bg-black w-screen h-fit pt-5 pb-2 text-white'>
@@ -74,8 +82,8 @@ const HomeScreen = () => {
                 <div className='w-full h-40 p-6 mt-4'>
                     <h3 className='text-lg font-medium mb-2'>Find your perfect ambience</h3>
                     <div className='flex justify-start items-center'>
-                        <img src='romantic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceHandler('romantic')}/>
-                        <img src='livemusic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceHandler('livemusic')}/>
+                        <img src='romantic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('romantic')}/>
+                        <img src='livemusic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('livemusic')}/>
                         <img src='retro.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('retro')}/>
                         <img src='sportsbar.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('sportsbar')}/>
                         <img src='family.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('family')}/>
@@ -93,10 +101,10 @@ const HomeScreen = () => {
                         <img src='beverage.png' className='w-4/5 object-contain cursor-pointer' onClick={() => cuisineSelector('beverage')}/>
                         <img src='chefspecial.png' className='w-4/5 object-contain cursor-pointer' onClick={() => cuisineSelector('cheffspecials')}/>
                     </div>
-                    {console.log(`current ambience value is: ${ambience}`)}
+                    {/* {console.log(`current ambience value is: ${ambience}`)}
                     {console.log(`current cuisine value is: ${cuisine}`)}
                     {console.log(`current searchquery value is: ${searchQuery}`)}
-                    {console.log(`current city value is: ${city}`)}
+                    {console.log(`current city value is: ${city}`)} */}
                 </div>
             </div>
         </div>
