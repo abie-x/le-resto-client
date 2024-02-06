@@ -6,6 +6,8 @@ import HomeScreen from './screens/HomeScreen';
 import RestaurentListScreen from './screens/RestaurentListScreen';
 import MenuListScreen from './screens/MenuListScreen';
 import CartScreen from './screens/CartScreen';
+import SuccessScreen from './screens/SuccessScreen';
+import CancelScreen from './screens/CancelScreen';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path='/restaurents' Component={RestaurentListScreen} />
           <Route path='/menu/:id' Component={MenuListScreen} />
           <Route path='/cart' Component={CartScreen} />
+          <Route path='/cancel' Component={CancelScreen} />
+          <Route path='/success' Component={SuccessScreen} />
       </Routes>
     </Router>
   );

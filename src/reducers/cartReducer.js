@@ -39,3 +39,16 @@ export const cartReducer = (
         return state
     }
   }
+
+
+  export const setTableNumberReducer = (state = {}, action) => {
+    console.log(`table num is ${action.payload}`)
+    switch (action.type) {
+      case 'SET_TABLE_NUMBER':
+        return {
+          tableNumberChange: action.payload,
+        };
+      default:
+        return state;
+    }
+  } 

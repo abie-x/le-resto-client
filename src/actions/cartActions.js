@@ -32,3 +32,11 @@ export const removeFromCart = (id) => (dispatch, getState) => {
   
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
+
+export const setTableNum = (tableno) => (dispatch, getState) => {
+  console.log(' is ', tableno)
+  dispatch({
+    type: SET_TABLE_NUMBER,
+    payload: tableno,
+  })
+}

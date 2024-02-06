@@ -1,10 +1,14 @@
 import React, {useState} from "react";
 import {useNavigate} from 'react-router-dom'
 import DishInCart from "../components/DishInCart";
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { useParams } from 'react-router-dom';
+import { createOrder } from "../actions/orderActions";
+import { setTableNum } from "../actions/cartActions";
 
 const CartScreen = () => {
+
+    const dispatch = useDispatch()
 
     const [tableNumber, setTableNumber] = useState(null)
     const [tablePin, setTablePin] = useState(null)
@@ -30,22 +34,77 @@ const CartScreen = () => {
     const cart = useSelector((state) => state.cart)
     const { cartItems } = cart
 
+    const userLogin = useSelector(state => state.userLogin)
+    const {loading, userInfo, error} = userLogin
+
+    const tableNum = useSelector((state) => state.tableNumber)
+    const { tableNumberChange } = tableNum
+
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
     const navigateHandler = () => {
         navigate(`/menu/${id}`)
     }
 
+    const placeOrderHandler = () => {
+        const formattedMenuItems = [];
+
+        cartItems.forEach(item => {
+            console.log(item)
+            const formattedItem = {
+                item_id: item.id,
+                quantity: item.qty,
+                item_name: item.name,
+                item_price: item.price,
+                price: item.item_stripe_price
+            };
+                
+            formattedMenuItems.push(formattedItem);
+
+        });
+            
+        dispatch(
+            createOrder({
+                customer_name: userInfo.username,
+                menu_items: formattedMenuItems,
+                restaurant_id: id,
+                total_price: totalPrice,
+                table_number: tableNumber
+            })
+            )
+
+        navigate(`/menu/${id}`)
+    }
+
     const checkoutHandler = () => {
         if(tableNumber === '1' && tablePin === '010010') {
-            console.log('success1')
+            placeOrderHandler()
+            const tableno = tableNumber
+            dispatch(setTableNum(tableno))
         } else if(tableNumber === '2' && tablePin === '64762') {
-            console.log('success2')
+            placeOrderHandler()
+            dispatch(setTableNumber(tableNumber))
         } else if(tableNumber === '3' && tablePin === '76377') {
-            console.log('success3')
+            placeOrderHandler()
+            dispatch(setTableNumber(tableNumber))
         } else {
             setErr('Invalid pin or table number entered')
         }    
+    }
+
+    const payBillHanlder = async () => { 
+        await fetch(`http://localhost:3001/api/payment?restaurantId=${id}&tableNumber=${tableNumberChange}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            if(response.url) {
+                window.location.assign(response.url); // Forwarding user to Stripe
+            }
+        });
     }
     
 
@@ -128,6 +187,10 @@ const CartScreen = () => {
                         <hr class="h-px my-2 bg-gray-600 border-0"></hr>
 
                         <button type="button" class=" bg-white text-black font-medium rounded-lg text-sm px-5 py-3 text-center w-full mt-2" onClick={() => checkoutHandler()} >{(cartItems.filter(item => item.qty > 0).length) > 0 ? 'checkout' : 'view menu'}</button>
+
+                        <hr class="h-px my-2 bg-gray-600 border-0"></hr>
+
+                        <button type="button" class=" bg-green-400 text-white font-medium rounded-lg text-sm px-5 py-3 text-center w-full mt-2" onClick={() => payBillHanlder()} >Pay bill</button>
 
                     </div>
                 </div>
