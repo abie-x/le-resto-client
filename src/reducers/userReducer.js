@@ -1,4 +1,4 @@
-import {USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL} from "../constants/userConstants"
+import {USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL, CHEFF_LOGIN_REQUEST, CHEFF_LOGIN_SUCCESS, CHEFF_LOGIN_FAIL} from "../constants/userConstants"
 
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -21,6 +21,21 @@ export const userLoginReducer = (state = {}, action) => {
       case USER_LOGIN_SUCCESS:
         return { loading: false, userInfo: action.payload }
       case USER_LOGIN_FAIL:
+        return { loading: false, error: action.payload }
+    //   case USER_LOGOUT:
+    //     return {}
+      default:
+        return state
+    }
+  }
+
+  export const cheffLoginReducer = (state = {}, action) => {
+    switch (action.type) {
+      case CHEFF_LOGIN_REQUEST:
+        return { loading: true }
+      case CHEFF_LOGIN_SUCCESS:
+        return { loading: false, cheffInfo: action.payload }
+      case CHEFF_LOGIN_FAIL:
         return { loading: false, error: action.payload }
     //   case USER_LOGOUT:
     //     return {}

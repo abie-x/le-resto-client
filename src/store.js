@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk' 
 import { composeWithDevTools } from 'redux-devtools-extension'
-import {userRegisterReducer, userLoginReducer} from "./reducers/userReducer"
+import {userRegisterReducer, userLoginReducer, cheffLoginReducer} from "./reducers/userReducer"
 import {cartReducer} from './reducers/cartReducer'
 import { orderCreateReducer } from './reducers/orderReducer'
 import { setTableNumberReducer } from './reducers/cartReducer'
@@ -19,7 +19,8 @@ const reducer = combineReducers({
     // candidateList: candidateListReducer,
     // candidateInfo: candidateReducer,
     // vote: voteReducer,
-    tableNumber: setTableNumberReducer
+    tableNumber: setTableNumberReducer,
+    cheffLogin: cheffLoginReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -30,9 +31,14 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
+  const cheffInfoFromStorage = localStorage.getItem('cheffInfo')
+  ? JSON.parse(localStorage.getItem('cheffInfo'))
+  : null
+
 const initialState = {
     cart: {cartItems: cartItemsFromStorage},
     userLogin: { userInfo: userInfoFromStorage },
+    cheffLogin: {cheffInfo: cheffInfoFromStorage}
 }
 
 const middleware = [thunk]

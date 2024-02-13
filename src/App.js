@@ -8,6 +8,8 @@ import MenuListScreen from './screens/MenuListScreen';
 import CartScreen from './screens/CartScreen';
 import SuccessScreen from './screens/SuccessScreen';
 import CancelScreen from './screens/CancelScreen';
+import CookLoginScreen from './screens/CookLoginScreen';
+import OrderUpdationScreen from './screens/OrderUpdationScreen';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path='/cart' Component={CartScreen} />
           <Route path='/cancel' Component={CancelScreen} />
           <Route path='/success' Component={SuccessScreen} />
+          <Route path='/cookLogin' Component={CookLoginScreen} /> 
+          <Route path='/orders' Component={OrderUpdationScreen} />
       </Routes>
     </Router>
   );
