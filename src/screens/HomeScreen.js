@@ -81,7 +81,7 @@ const HomeScreen = () => {
                     </div>}
                 <div className='w-full h-40 p-6 mt-4'>
                     <h3 className='text-lg font-medium mb-2'>Find your perfect ambience</h3>
-                    <div className='flex justify-start items-center'>
+                    <div className='flex justify-start items-center gap-2'>
                         <img src='romantic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('romantic')}/>
                         <img src='livemusic.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('livemusic')}/>
                         <img src='retro.png' className='w-24 h-24 object-contain mr-2 cursor-pointer' onClick={() => ambienceSelector('retro')}/>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from 'react-router-dom'
 import DishInCart from "../components/DishInCart";
 import {useSelector, useDispatch} from 'react-redux'
@@ -13,6 +13,7 @@ const CartScreen = () => {
     const [tableNumber, setTableNumber] = useState(null)
     const [tablePin, setTablePin] = useState(null)
     const [err, setErr] = useState(null)
+    const [toShow, setToShow] = useState(null)
 
     const changeTableNumber = (e) => {
         setTableNumber(e.target.value)
@@ -35,10 +36,25 @@ const CartScreen = () => {
     const { cartItems } = cart
 
     const userLogin = useSelector(state => state.userLogin)
-    const {loading, userInfo, error} = userLogin
+    const {loading, userInfo } = userLogin
 
     const tableNum = useSelector((state) => state.tableNumber)
     const { tableNumberChange } = tableNum
+
+    const orderCreate = useSelector((state) => state.orderCreate)
+    const { success, error } = orderCreate
+
+    useEffect(() => {
+
+        if(toShow && error) {
+            setErr(error)
+        }
+
+        if(toShow && success) {
+            navigate(`/menu/${id}`)
+        }
+
+    }, [success, error, toShow])
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
@@ -65,7 +81,7 @@ const CartScreen = () => {
             
         dispatch(
             createOrder({
-                customer_name: userInfo.username,
+                customer_name: userInfo.userName,
                 menu_items: formattedMenuItems,
                 restaurant_id: id,
                 total_price: totalPrice,
@@ -73,7 +89,15 @@ const CartScreen = () => {
             })
             )
 
-        navigate(`/menu/${id}`)
+        setToShow(true)
+        //  if(error) {
+        //     setErr(error)
+        // }
+
+        // if(success) {
+        //     // console.log('hey, success is always success')
+        //     navigate(`/menu/${id}`)
+        // }
     }
 
     const checkoutHandler = () => {

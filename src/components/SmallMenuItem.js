@@ -21,10 +21,10 @@ const SmallMenuItem = ({id, image, name, calorie, price}) => {
         } else {
             dispatch(addToCart(id, qty - 1))
         }
-    }
+    } 
 
     return (
-        <div className="bg-gray-300 rounded-lg p-3 w-40" key={id}>
+        <div className="flex-shrink-0  bg-gray-300 text-black p-3 w-40 gap-6 rounded-md" key={id}>
         <div className="flex justify-center items-center">
             <img src={image} className="w-24 h-24 rounded-full object-cover" alt={name} />
         </div>

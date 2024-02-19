@@ -66,10 +66,10 @@ const MenuListScreen = () => {
 
             <div className="mt-12">
                 <h2 className="text-white text-lg font-medium">Starters & popular drinks</h2>
-                <div className="flex justify-around gap-4 overflow-x-auto max-w-screen-2xl text-white pt-2">
+                <div className="flex overflow-x-auto max-w-screen-2xl gap-3 py-1">
                     {
                         menu && menu.map((x) => {
-                            if (x.category === "starters") {
+                            if (x.category === "starters" && x.remaining > 0) {
                             return (
                                 <SmallMenuItem id={x._id} image={x.item_image} name={x.item_name} calorie={x.calorie} price={x.item_price}/>
                             );
@@ -86,7 +86,7 @@ const MenuListScreen = () => {
                     <div className="flex overflow-x-auto max-w-screen-2xl gap-4 py-1">
                         {
                             menu && menu.map((x) => {
-                                if(x.category === 'main course') {
+                                if(x.category === 'main course' && x.remaining > 0) {
                                     return (
                                         <MenuItem id={x._id} image={x.item_image} name={x.item_name} price={x.item_price} calorie={x.calorie} />
                                     )

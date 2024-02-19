@@ -75,34 +75,36 @@ const Navbar = ({isProfile, isLocation, setCity, setSearchQuery, serachHandler, 
         <nav className="w-full px-2 sm:px-6 lg:px-8 text-white">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <div className="flex-shrink-0">
-                        <img className="h-5 w-auto hover:cursor-pointer" src="logo.png" alt="Your Company" onClick={navigateToHome} />
+                    <div className="w-full flex gap-10">
+                        <div className="flex-shrink-0  flex items-center">
+                            <img className="h-5 w-auto hover:cursor-pointer" src="logo.png" alt="Your Company" onClick={navigateToHome} />
+                        </div>
+                        {
+                            isLocation && (
+                                <div className="w-2/5">
+                                    <Select
+                                        options={options}
+                                        components={{ DropdownIndicator: CustomDropdownIndicator }}
+                                        styles={customStyles}
+                                        placeholder="select your location"
+                                        onChange={(e) => setCity(e.value)}
+                                    />
+                                </div>
+                            )
+                        }
                     </div>
-                    {
-                        isLocation && (
-                            <div className="bg-red=100 w-1/5">
-                                <Select
-                                    options={options}
-                                    components={{ DropdownIndicator: CustomDropdownIndicator }}
-                                    styles={customStyles}
-                                    placeholder="select your location"
-                                    onChange={(e) => setCity(e.value)}
-                                />
-                            </div>
-                        )
-                    }
                     {/* Nav Links */}
                     {
-                        isProfile && (
-                            <Searchbar setSearchQuery={setSearchQuery} serachHandler={serachHandler} placeholder={placeholder}/>
-                        )
+                        // isProfile && (
+                        //     <Searchbar setSearchQuery={setSearchQuery} serachHandler={serachHandler} placeholder={placeholder}/>
+                        // )
                     }
-                    <div className="hidden sm:block">
+                    <div className="hidden sm:block w-full">
                         {isProfile ?  (
-                            <div className="flex items-center">
-                                <div className="flex-col justify-center">
+                            <div className="flex items-center justify-end  w-full">
+                                <div className="flex flex-col justify-center">
                                     <h6 className="text-sm text-right">Hey Doodle</h6>
-                                    <h6 className="text-xs">see your dashboard</h6>
+                                    <h6 className="text-xs text-right">see your dashboard</h6>
                                 </div>
                                 <img src="profile.png" className="w-14 h-14 object-contain" />
                         </div>
