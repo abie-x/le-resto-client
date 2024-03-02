@@ -1,32 +1,30 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 
-const OrderDisplay = ({ order, hours, minutes, seconds }) => {
+const OrderDisplay = ({ order, hours, minutes, seconds, onUpdate }) => {
 
     const [currentState, changeCurrentState] = useState(order.status)
     console.log('status: ', currentState)
 
     const changeStatus = async (status, id) => {
-
-        console.log(status)
-
-        changeCurrentState(status)
-
-        const config = {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-      
-          const { data } = await axios.put(
-            `http://127.0.0.1:3001/api/order/${id}/status`,
-            { status },
-            config
-          )
-
-          console.log(data)
-
-    }
+        try {
+            await axios.put(
+                `http://127.0.0.1:3001/api/order/${id}/status`,
+                { status },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            // Update the local state
+            changeCurrentState(status);
+            // Inform the parent component about the status update
+            onUpdate();
+        } catch (error) {
+            console.error('Error updating order status:', error);
+        }
+    };
 
 
     return (
@@ -58,9 +56,31 @@ const OrderDisplay = ({ order, hours, minutes, seconds }) => {
             <div className="px-6 ">
                 <h5 className="font-semibold text-base">Order status</h5>
                 <div className="w-full h-14 bg-black mt-1 grid grid-cols-3 gap-2 p-2">
-                    <button type="button" className={`text-black bg-white font-medium rounded-md text-sm hover:bg-green-300 ${currentState === 'Confirmed' ? 'bg-green-300' : ''}`} onClick={() => changeStatus('Confirmed', order._id)}>Accepted</button>
-                    <button type="button" className={`text-black bg-white font-medium rounded-md text-sm  hover:bg-green-300 ${currentState === 'Prepared' ? 'bg-green-300' : ''}`} onClick={() => changeStatus('Prepared', order._id)}>Prepared</button>
-                    <button type="button" className={`text-black bg-white font-medium rounded-md text-sm hover:bg-green-300  ${order.status === 'Delivered' ? 'bg-green-300' : ''}`} onClick={() => changeStatus('Delivered', order._id)}>Delivered</button>
+                    <button 
+                        type="button" 
+                        className={`text-black font-medium rounded-md text-sm ${currentState === 'Confirmed' ? 'bg-green-300' : 'bg-white hover:bg-green-300'}`} 
+                        onClick={() => changeStatus('Confirmed', order._id)}
+                    >
+        Accepted
+    </button>
+
+            <button 
+                type="button" 
+                className={`text-black font-medium rounded-md text-sm ${currentState === 'Prepared' ? 'bg-green-300' : 'bg-white hover:bg-green-300'}`} 
+                onClick={() => changeStatus('Prepared', order._id)}
+            >
+                Prepared
+            </button>
+
+            <button 
+                type="button" 
+                className={`text-black font-medium rounded-md text-sm ${currentState === 'Delivered' ? 'bg-green-300' : 'bg-white hover:bg-green-300'}`} 
+                onClick={() => changeStatus('Delivered', order._id)}
+            >
+                Delivered
+            </button>
+
+
                 </div>
                 {console.log(currentState)}
             </div>

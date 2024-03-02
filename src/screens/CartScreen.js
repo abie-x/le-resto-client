@@ -14,6 +14,7 @@ const CartScreen = () => {
     const [tablePin, setTablePin] = useState(null)
     const [err, setErr] = useState(null)
     const [toShow, setToShow] = useState(null)
+    const [errVisible, setErrVisible] = useState(true)
 
     const changeTableNumber = (e) => {
         setTableNumber(e.target.value)
@@ -39,7 +40,7 @@ const CartScreen = () => {
     const {loading, userInfo } = userLogin
 
     const tableNum = useSelector((state) => state.tableNumber)
-    const { tableNumberChange } = tableNum
+    const tableNumberChange = tableNum.tableNumberChange
 
     const orderCreate = useSelector((state) => state.orderCreate)
     const { success, error } = orderCreate
@@ -48,6 +49,11 @@ const CartScreen = () => {
 
         if(toShow && error) {
             setErr(error)
+            setErrVisible(true)
+            setTimeout(() => {
+                setErr('');
+                setErrVisible(false);
+              }, 2000);
         }
 
         if(toShow && success) {
@@ -107,12 +113,19 @@ const CartScreen = () => {
             dispatch(setTableNum(tableno))
         } else if(tableNumber === '2' && tablePin === '64762') {
             placeOrderHandler()
-            dispatch(setTableNumber(tableNumber))
+            const tableno = tableNumber
+            dispatch(setTableNum(tableno))
         } else if(tableNumber === '3' && tablePin === '76377') {
             placeOrderHandler()
-            dispatch(setTableNumber(tableNumber))
+            const tableno = tableNumber
+            dispatch(setTableNum(tableno))
         } else {
             setErr('Invalid pin or table number entered')
+            setErrVisible(true)
+            setTimeout(() => {
+                setErr('');
+                setErrVisible(false);
+              }, 2000);
         }    
     }
 
@@ -123,8 +136,17 @@ const CartScreen = () => {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
+            console.log(response)
             return response.json();
         }).then((response) => {
+            if(response.error) {
+                setErr(response.error)
+                setErrVisible(true)
+                setTimeout(() => {
+                    setErr('');
+                    setErrVisible(false);
+                  }, 2000);
+            }
             if(response.url) {
                 window.location.assign(response.url); // Forwarding user to Stripe
             }
@@ -222,7 +244,7 @@ const CartScreen = () => {
                     <img src="cheff.png" className="h-screen -mt-24 object-cover -ml-12" />
                 </div>
             </div>
-
+            {console.log(tableNum.tableNumberChange)}
         </div>
     )
 }

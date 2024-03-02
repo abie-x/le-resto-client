@@ -24,9 +24,9 @@ const HomeScreen = () => {
 
     useEffect(() => {
         if(city && ambience) {
-            navigate(`/restaurents?ambience=${ambience}&city=${city}`)
+            navigate(`/restaurents?ambience=${ambience}&city=bangalore`)
         } else if(city && cuisine) {
-            navigate(`/restaurents?cuisine=${cuisine}&city=${city}`)
+            navigate(`/restaurents?cuisine=${cuisine}&city=bangalore`)
         }
     }, [ambience, cuisine])
 

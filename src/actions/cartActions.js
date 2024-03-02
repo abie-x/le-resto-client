@@ -39,4 +39,5 @@ export const setTableNum = (tableno) => (dispatch, getState) => {
     type: SET_TABLE_NUMBER,
     payload: tableno,
   })
+  localStorage.setItem('tableNumber', JSON.stringify(tableno))
 }

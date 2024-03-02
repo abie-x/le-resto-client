@@ -27,6 +27,10 @@ const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : []
 
+  const tableNumberFromStorage = localStorage.getItem('tableNumber')
+  ? JSON.parse(localStorage.getItem('tableNumber'))
+  : null
+
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
@@ -38,7 +42,8 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 const initialState = {
     cart: {cartItems: cartItemsFromStorage},
     userLogin: { userInfo: userInfoFromStorage },
-    cheffLogin: {cheffInfo: cheffInfoFromStorage}
+    cheffLogin: {cheffInfo: cheffInfoFromStorage},
+    tableNumber: {tableNumber: tableNumberFromStorage}
 }
 
 const middleware = [thunk]
